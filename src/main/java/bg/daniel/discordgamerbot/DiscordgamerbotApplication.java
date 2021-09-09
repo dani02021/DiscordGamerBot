@@ -18,7 +18,7 @@ public class DiscordgamerbotApplication {
 	Environment env;
 	
 	@Autowired
-	PingCommand pingCmd;;
+	PingCommand pingCmd;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DiscordgamerbotApplication.class, args);
