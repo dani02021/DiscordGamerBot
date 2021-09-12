@@ -9,7 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
-import bg.daniel.discordgamerbot.commands.PingCommand;
+import bg.daniel.discordgamerbot.commands.AcceptCommand;
+import bg.daniel.discordgamerbot.commands.ChallengeCommand;
+import bg.daniel.discordgamerbot.commands.DeclineCommand;
+import bg.daniel.discordgamerbot.commands.SwordAttackCommand;
 
 @SpringBootApplication
 public class DiscordgamerbotApplication {
@@ -18,7 +21,18 @@ public class DiscordgamerbotApplication {
 	Environment env;
 	
 	@Autowired
-	PingCommand pingCmd;;
+	ChallengeCommand challengeCmd;
+	
+	@Autowired
+	AcceptCommand acceptCmd;
+	
+	@Autowired
+	DeclineCommand declineCmd;
+	
+	@Autowired
+	SwordAttackCommand attackCmd;
+	
+	public static DiscordApi api;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DiscordgamerbotApplication.class, args);
@@ -29,12 +43,15 @@ public class DiscordgamerbotApplication {
 	public DiscordApi discordApi() {
 		String token = env.getProperty("TOKEN");
 		
-		DiscordApi api = new DiscordApiBuilder().setToken(token)
+		api = new DiscordApiBuilder().setToken(token)
 				.setAllNonPrivilegedIntents()
 				.login()
 				.join();
 		
-		api.addMessageCreateListener(pingCmd);
+		api.addMessageCreateListener(challengeCmd);
+		api.addMessageCreateListener(acceptCmd);
+		api.addMessageCreateListener(declineCmd);
+		api.addMessageCreateListener(attackCmd);
 		
 		return api;
 	}
